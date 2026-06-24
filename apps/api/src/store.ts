@@ -15,6 +15,7 @@ export type CreateIncidentInput = Omit<Incident, "id" | "createdAt">;
 export type Store = {
   listIntersections(): Promise<Intersection[]>;
   createWorker(input: WorkerInput, publicWebUrl: string): Promise<Worker>;
+  getWorker(id: string): Promise<Worker | null>;
   listActiveWorkers(intersectionId?: string): Promise<Worker[]>;
   createDonation(input: CreateDonationInput): Promise<Donation>;
   createIncident(input: CreateIncidentInput): Promise<Incident>;
@@ -49,6 +50,9 @@ export function createMemoryStore(): Store {
       };
       workers.push(worker);
       return worker;
+    },
+    async getWorker(workerId) {
+      return workers.find((worker) => worker.id === workerId) || null;
     },
     async listActiveWorkers(intersectionId) {
       return workers.filter((worker) => worker.status === "activo" && (!intersectionId || worker.intersectionId === intersectionId));

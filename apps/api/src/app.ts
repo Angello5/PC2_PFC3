@@ -57,6 +57,12 @@ export function createApp(store: Store = createMemoryStore()) {
     res.json(await store.listActiveWorkers(intersectionId));
   });
 
+  app.get("/workers/:id", async (req, res) => {
+    const worker = await store.getWorker(req.params.id);
+    if (!worker || worker.status !== "activo") return res.status(404).json({ error: "Trabajador activo no encontrado." });
+    res.json(worker);
+  });
+
   app.post("/donations", async (req, res) => {
     const parsed = donationSchema.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ errors: parsed.error.flatten().fieldErrors });

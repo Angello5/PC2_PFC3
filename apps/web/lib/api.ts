@@ -17,6 +17,7 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
 export const client = {
   intersections: () => api<Intersection[]>("/intersections"),
   activeWorkers: () => api<Worker[]>("/workers/active"),
+  worker: (id: string) => api<Worker>(`/workers/${id}`),
   stats: () => api<DashboardStats>("/dashboard/stats"),
   createWorker: (payload: WorkerInput) => api<Worker>("/workers", { method: "POST", body: JSON.stringify(payload) }),
   createDonation: (payload: Omit<Donation, "id" | "createdAt">) => api<Donation>("/donations", { method: "POST", body: JSON.stringify(payload) }),

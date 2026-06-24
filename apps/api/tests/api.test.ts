@@ -15,6 +15,12 @@ describe("API Manos en Ruta", () => {
     await expect(store.listActiveWorkers()).resolves.toHaveLength(0);
   });
 
+  it("obtiene trabajador adulto por id para QR", async () => {
+    const store = createMemoryStore();
+    const worker = await store.createWorker({ fullName: "Adulto Activo", age: 30 }, "https://app.test");
+    await expect(store.getWorker(worker.id)).resolves.toMatchObject({ id: worker.id, status: "activo" });
+  });
+
   it("rechaza donacion con monto invalido", async () => {
     expect(validateDonationAmount(0)).toHaveLength(1);
   });

@@ -75,6 +75,11 @@ export function createSupabaseStore(): Store | null {
       }
       return { ...worker, qrCodeUrl };
     },
+    async getWorker(id: string) {
+      const { data, error } = await supabase.from("workers").select("*").eq("id", id).single();
+      if (error) return null;
+      return workerFromRow(data);
+    },
     async listActiveWorkers(intersectionId?: string) {
       let query = supabase.from("workers").select("*").eq("status", "activo").order("created_at", { ascending: false });
       if (intersectionId) {
