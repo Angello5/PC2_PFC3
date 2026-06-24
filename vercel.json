@@ -1,7 +1,5 @@
 {
   "buildCommand": "pnpm --filter @manos-en-ruta/web build",
-  "devCommand": "pnpm --filter @manos-en-ruta/web dev",
-  "installCommand": "pnpm install",
-  "framework": "nextjs",
-  "outputDirectory": "apps/web/.next"
+  "outputDirectory": ".next",
+  "installCommand": "pnpm install"
 }
