@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validateDonationAmount } from "@manos-en-ruta/shared";
+import { validateCitizenReport, validateDonationAmount } from "@manos-en-ruta/shared";
 import { createMemoryStore } from "../src/store";
 
 describe("API Manos en Ruta", () => {
@@ -23,5 +23,16 @@ describe("API Manos en Ruta", () => {
 
   it("rechaza donacion con monto invalido", async () => {
     expect(validateDonationAmount(0)).toHaveLength(1);
+  });
+
+  it("registra reporte ciudadano sin crear trabajador", async () => {
+    const store = createMemoryStore();
+    await store.createCitizenReport({ locationText: "Av. Arequipa", description: "Persona sin QR solicita orientacion." });
+    await expect(store.listCitizenReports()).resolves.toHaveLength(1);
+    await expect(store.listActiveWorkers()).resolves.toHaveLength(0);
+  });
+
+  it("valida reporte ciudadano minimo", async () => {
+    expect(validateCitizenReport({ locationText: "", description: "" })).toHaveLength(2);
   });
 });

@@ -3,6 +3,7 @@ create extension if not exists pgcrypto;
 create type worker_status as enum ('activo', 'inactivo', 'alerta_derivacion');
 create type risk_level as enum ('bajo', 'medio', 'alto');
 create type incident_type as enum ('accidente', 'rechazo', 'salud', 'contaminacion', 'otro');
+create type citizen_report_status as enum ('pendiente', 'revisado', 'derivado');
 
 create table organizations (
   id uuid primary key default gen_random_uuid(),
@@ -75,6 +76,17 @@ create table incidents (
   created_at timestamptz not null default now()
 );
 
+create table citizen_reports (
+  id uuid primary key default gen_random_uuid(),
+  location_text text not null,
+  suggested_amount numeric(10,2) check (suggested_amount is null or suggested_amount >= 0),
+  reporter_name text,
+  reporter_contact text,
+  description text not null,
+  status citizen_report_status not null default 'pendiente',
+  created_at timestamptz not null default now()
+);
+
 alter table organizations enable row level security;
 alter table profiles enable row level security;
 alter table intersections enable row level security;
@@ -82,6 +94,7 @@ alter table workers enable row level security;
 alter table shifts enable row level security;
 alter table donations enable row level security;
 alter table incidents enable row level security;
+alter table citizen_reports enable row level security;
 
 create policy "lectura autenticada organizations" on organizations for select to authenticated using (true);
 create policy "lectura autenticada profiles" on profiles for select to authenticated using ((select auth.uid()) = id);
@@ -90,8 +103,10 @@ create policy "lectura autenticada workers" on workers for select to authenticat
 create policy "lectura autenticada shifts" on shifts for select to authenticated using (true);
 create policy "lectura autenticada donations" on donations for select to authenticated using (true);
 create policy "lectura autenticada incidents" on incidents for select to authenticated using (true);
+create policy "lectura autenticada citizen_reports" on citizen_reports for select to authenticated using (true);
 
 create index workers_status_idx on workers(status);
 create index shifts_worker_id_idx on shifts(worker_id);
 create index donations_worker_id_idx on donations(worker_id);
 create index incidents_worker_id_idx on incidents(worker_id);
+create index citizen_reports_status_idx on citizen_reports(status);

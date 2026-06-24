@@ -1,4 +1,4 @@
-import type { DashboardStats, Donation, Incident, Intersection, Worker, WorkerInput } from "@manos-en-ruta/shared";
+import type { CitizenReport, CitizenReportInput, DashboardStats, Donation, Incident, Intersection, Worker, WorkerInput } from "@manos-en-ruta/shared";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
@@ -21,5 +21,7 @@ export const client = {
   stats: () => api<DashboardStats>("/dashboard/stats"),
   createWorker: (payload: WorkerInput) => api<Worker>("/workers", { method: "POST", body: JSON.stringify(payload) }),
   createDonation: (payload: Omit<Donation, "id" | "createdAt">) => api<Donation>("/donations", { method: "POST", body: JSON.stringify(payload) }),
-  createIncident: (payload: Omit<Incident, "id" | "createdAt">) => api<Incident>("/incidents", { method: "POST", body: JSON.stringify(payload) })
+  createIncident: (payload: Omit<Incident, "id" | "createdAt">) => api<Incident>("/incidents", { method: "POST", body: JSON.stringify(payload) }),
+  createCitizenReport: (payload: CitizenReportInput) => api<CitizenReport>("/citizen-reports", { method: "POST", body: JSON.stringify(payload) }),
+  citizenReports: () => api<CitizenReport[]>("/citizen-reports")
 };

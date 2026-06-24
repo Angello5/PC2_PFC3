@@ -19,3 +19,6 @@ insert into donations (worker_id, amount, donor_name, message) values
 
 insert into incidents (worker_id, intersection_id, type, description) values
   ('30000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000002', 'contaminacion', 'Se reporta exposicion alta a humo vehicular durante hora punta.');
+
+insert into citizen_reports (location_text, suggested_amount, reporter_name, reporter_contact, description, status) values
+  ('Av. Canada con Aviacion', 3.00, 'Conductor anonimo', null, 'Persona sin QR solicita orientacion y apoyo; requiere validacion de la ONG.', 'pendiente');

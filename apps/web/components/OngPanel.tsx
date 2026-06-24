@@ -3,7 +3,7 @@
 import { AlertTriangle, HandCoins, MapPinned, ShieldCheck } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useMemo, useState } from "react";
-import type { DashboardStats, IncidentType, Intersection, Worker } from "@manos-en-ruta/shared";
+import type { CitizenReport, DashboardStats, IncidentType, Intersection, Worker } from "@manos-en-ruta/shared";
 import { normalizeWorkerStatus } from "@manos-en-ruta/shared";
 import { client } from "../lib/api";
 
@@ -13,21 +13,24 @@ const emptyStats: DashboardStats = {
   donationsTotal: 0,
   donationsCount: 0,
   incidentsCount: 0,
-  safeZones: 0
+  safeZones: 0,
+  citizenReportsPending: 0
 };
 
 export function OngPanel() {
   const [intersections, setIntersections] = useState<Intersection[]>([]);
   const [workers, setWorkers] = useState<Worker[]>([]);
+  const [citizenReports, setCitizenReports] = useState<CitizenReport[]>([]);
   const [selectedWorker, setSelectedWorker] = useState<Worker | null>(null);
   const [stats, setStats] = useState<DashboardStats>(emptyStats);
   const [message, setMessage] = useState("");
 
   async function refresh() {
-    const [zones, activeWorkers, dashboard] = await Promise.all([client.intersections(), client.activeWorkers(), client.stats()]);
+    const [zones, activeWorkers, dashboard, reports] = await Promise.all([client.intersections(), client.activeWorkers(), client.stats(), client.citizenReports()]);
     setIntersections(zones);
     setWorkers(activeWorkers);
     setStats(dashboard);
+    setCitizenReports(reports);
     setSelectedWorker((current) => current ?? activeWorkers[0] ?? null);
   }
 
@@ -93,6 +96,7 @@ export function OngPanel() {
             <Stat label="Incidentes" value={stats.incidentsCount} icon={<AlertTriangle size={22} />} />
             <Stat label="Zonas seguras" value={stats.safeZones} icon={<MapPinned size={22} />} />
             <Stat label="Operaciones QR" value={stats.donationsCount} icon={<HandCoins size={22} />} />
+            <Stat label="Reportes ciudadanos" value={stats.citizenReportsPending} icon={<MapPinned size={22} />} />
           </div>
         </div>
 
@@ -177,6 +181,20 @@ export function OngPanel() {
             </label>
             <button className="button" type="submit">Registrar incidente</button>
           </form>
+        </section>
+
+        <section className="panel span-12">
+          <h2>Reportes ciudadanos sin QR</h2>
+          <div className="list">
+            {citizenReports.length === 0 ? <p>No hay reportes ciudadanos pendientes.</p> : null}
+            {citizenReports.slice(0, 5).map((report) => (
+              <div className="item" key={report.id}>
+                <strong>{report.locationText}</strong>
+                <small>{report.description}</small>
+                <small>Estado: {report.status}</small>
+              </div>
+            ))}
+          </div>
         </section>
       </section>
     </>

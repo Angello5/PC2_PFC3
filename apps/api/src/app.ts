@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import { z } from "zod";
-import { validateDonationAmount, validateWorker } from "@manos-en-ruta/shared";
+import { validateCitizenReport, validateDonationAmount, validateWorker } from "@manos-en-ruta/shared";
 import { createMemoryStore, type Store } from "./store.js";
 
 const workerSchema = z.object({
@@ -26,6 +26,14 @@ const incidentSchema = z.object({
   intersectionId: z.string().optional(),
   type: z.enum(["accidente", "rechazo", "salud", "contaminacion", "otro"]),
   description: z.string().min(3)
+});
+
+const citizenReportSchema = z.object({
+  locationText: z.string().min(1),
+  suggestedAmount: z.coerce.number().nonnegative().optional(),
+  reporterName: z.string().optional(),
+  reporterContact: z.string().optional(),
+  description: z.string().min(1)
 });
 
 export function createApp(store: Store = createMemoryStore()) {
@@ -75,6 +83,18 @@ export function createApp(store: Store = createMemoryStore()) {
     const parsed = incidentSchema.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ errors: parsed.error.flatten().fieldErrors });
     res.status(201).json(await store.createIncident(parsed.data));
+  });
+
+  app.post("/citizen-reports", async (req, res) => {
+    const parsed = citizenReportSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ errors: parsed.error.flatten().fieldErrors });
+    const errors = validateCitizenReport(parsed.data);
+    if (errors.length) return res.status(400).json({ errors });
+    res.status(201).json(await store.createCitizenReport(parsed.data));
+  });
+
+  app.get("/citizen-reports", async (_req, res) => {
+    res.json(await store.listCitizenReports());
   });
 
   app.get("/dashboard/stats", async (_req, res) => {

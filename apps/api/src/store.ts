@@ -1,5 +1,7 @@
 import {
   buildDonationUrl,
+  type CitizenReport,
+  type CitizenReportInput,
   type DashboardStats,
   type Donation,
   type Incident,
@@ -11,6 +13,7 @@ import {
 
 export type CreateDonationInput = Omit<Donation, "id" | "createdAt">;
 export type CreateIncidentInput = Omit<Incident, "id" | "createdAt">;
+export type CreateCitizenReportInput = CitizenReportInput;
 
 export type Store = {
   listIntersections(): Promise<Intersection[]>;
@@ -19,6 +22,8 @@ export type Store = {
   listActiveWorkers(intersectionId?: string): Promise<Worker[]>;
   createDonation(input: CreateDonationInput): Promise<Donation>;
   createIncident(input: CreateIncidentInput): Promise<Incident>;
+  createCitizenReport(input: CreateCitizenReportInput): Promise<CitizenReport>;
+  listCitizenReports(): Promise<CitizenReport[]>;
   getDashboardStats(): Promise<DashboardStats>;
 };
 
@@ -34,6 +39,7 @@ export function createMemoryStore(): Store {
   const workers: Worker[] = [];
   const donations: Donation[] = [];
   const incidents: Incident[] = [];
+  const citizenReports: CitizenReport[] = [];
 
   return {
     async listIntersections() {
@@ -67,6 +73,14 @@ export function createMemoryStore(): Store {
       incidents.push(incident);
       return incident;
     },
+    async createCitizenReport(input) {
+      const report: CitizenReport = { ...input, id: id("rep"), status: "pendiente", createdAt: now() };
+      citizenReports.push(report);
+      return report;
+    },
+    async listCitizenReports() {
+      return citizenReports;
+    },
     async getDashboardStats() {
       return {
         activeWorkers: workers.filter((worker) => worker.status === "activo").length,
@@ -74,7 +88,8 @@ export function createMemoryStore(): Store {
         donationsTotal: donations.reduce((sum, donation) => sum + donation.amount, 0),
         donationsCount: donations.length,
         incidentsCount: incidents.length,
-        safeZones: intersections.filter((intersection) => intersection.isSafeZone).length
+        safeZones: intersections.filter((intersection) => intersection.isSafeZone).length,
+        citizenReportsPending: citizenReports.filter((report) => report.status === "pendiente").length
       };
     }
   };

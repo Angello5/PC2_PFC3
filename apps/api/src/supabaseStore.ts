@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import {
   buildDonationUrl,
+  type CitizenReport,
   type DashboardStats,
   type Donation,
   type Incident,
@@ -9,7 +10,7 @@ import {
   type WorkerInput,
   normalizeWorkerStatus
 } from "@manos-en-ruta/shared";
-import type { CreateDonationInput, CreateIncidentInput, Store } from "./store.js";
+import type { CreateCitizenReportInput, CreateDonationInput, CreateIncidentInput, Store } from "./store.js";
 
 type Row = Record<string, unknown>;
 
@@ -35,6 +36,19 @@ function intersectionFromRow(row: Row): Intersection {
     district: String(row.district),
     riskLevel: row.risk_level as Intersection["riskLevel"],
     isSafeZone: Boolean(row.is_safe_zone)
+  };
+}
+
+function citizenReportFromRow(row: Row): CitizenReport {
+  return {
+    id: String(row.id),
+    locationText: String(row.location_text),
+    suggestedAmount: row.suggested_amount === null || row.suggested_amount === undefined ? undefined : Number(row.suggested_amount),
+    reporterName: row.reporter_name ? String(row.reporter_name) : undefined,
+    reporterContact: row.reporter_contact ? String(row.reporter_contact) : undefined,
+    description: String(row.description),
+    status: row.status as CitizenReport["status"],
+    createdAt: String(row.created_at)
   };
 }
 
@@ -123,14 +137,31 @@ export function createSupabaseStore(): Store | null {
         createdAt: String(data.created_at)
       };
     },
+    async createCitizenReport(input: CreateCitizenReportInput) {
+      const { data, error } = await supabase.from("citizen_reports").insert({
+        location_text: input.locationText,
+        suggested_amount: input.suggestedAmount ?? null,
+        reporter_name: input.reporterName || null,
+        reporter_contact: input.reporterContact || null,
+        description: input.description
+      }).select("*").single();
+      if (error) throw error;
+      return citizenReportFromRow(data);
+    },
+    async listCitizenReports() {
+      const { data, error } = await supabase.from("citizen_reports").select("*").order("created_at", { ascending: false });
+      if (error) throw error;
+      return (data || []).map(citizenReportFromRow);
+    },
     async getDashboardStats(): Promise<DashboardStats> {
-      const [workers, donations, incidents, intersections] = await Promise.all([
+      const [workers, donations, incidents, intersections, citizenReports] = await Promise.all([
         supabase.from("workers").select("status"),
         supabase.from("donations").select("amount"),
         supabase.from("incidents").select("id"),
-        supabase.from("intersections").select("is_safe_zone")
+        supabase.from("intersections").select("is_safe_zone"),
+        supabase.from("citizen_reports").select("status")
       ]);
-      for (const result of [workers, donations, incidents, intersections]) {
+      for (const result of [workers, donations, incidents, intersections, citizenReports]) {
         if (result.error) throw result.error;
       }
       const workerRows = workers.data || [];
@@ -141,7 +172,8 @@ export function createSupabaseStore(): Store | null {
         donationsTotal: donationRows.reduce((sum, donation) => sum + Number(donation.amount), 0),
         donationsCount: donationRows.length,
         incidentsCount: incidents.data?.length || 0,
-        safeZones: (intersections.data || []).filter((intersection) => intersection.is_safe_zone).length
+        safeZones: (intersections.data || []).filter((intersection) => intersection.is_safe_zone).length,
+        citizenReportsPending: (citizenReports.data || []).filter((report) => report.status === "pendiente").length
       };
     }
   };
