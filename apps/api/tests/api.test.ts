@@ -39,6 +39,13 @@ describe("API Manos en Ruta", () => {
     await expect(store.listActiveWorkers()).resolves.toHaveLength(0);
   });
 
+  it("marca reporte ciudadano como revisado", async () => {
+    const store = createMemoryStore();
+    const report = await store.createCitizenReport({ locationText: "Av. Canada", description: "Persona sin QR." });
+    await expect(store.updateCitizenReportStatus(report.id, "revisado")).resolves.toMatchObject({ status: "revisado" });
+    await expect(store.getDashboardStats()).resolves.toMatchObject({ citizenReportsPending: 0 });
+  });
+
   it("valida reporte ciudadano minimo", async () => {
     expect(validateCitizenReport({ locationText: "", description: "" })).toHaveLength(2);
   });

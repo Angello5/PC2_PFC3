@@ -51,6 +51,12 @@ export function OngPanel() {
     await refresh();
   }
 
+  async function approveReport(reportId: string) {
+    await client.updateCitizenReportStatus(reportId, "revisado");
+    setMessage("Solicitud marcada como revisada. Si corresponde, registra a la persona como trabajador adulto o alerta social.");
+    await refresh();
+  }
+
   return (
     <>
       {message ? <p className="notice">{message}</p> : null}
@@ -114,6 +120,9 @@ export function OngPanel() {
                 <strong>{report.locationText}</strong>
                 <small>{report.description}</small>
                 <small>Estado: {report.status}</small>
+                {report.status === "pendiente" ? (
+                  <button className="button compact" type="button" onClick={() => approveReport(report.id)}>Aprobar revision</button>
+                ) : null}
               </div>
             ))}
           </div>

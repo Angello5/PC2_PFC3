@@ -24,5 +24,6 @@ export const client = {
   createDonation: (payload: Omit<Donation, "id" | "createdAt">) => api<Donation>("/donations", { method: "POST", body: JSON.stringify(payload) }),
   createIncident: (payload: Omit<Incident, "id" | "createdAt">) => api<Incident>("/incidents", { method: "POST", body: JSON.stringify(payload) }),
   createCitizenReport: (payload: CitizenReportInput) => api<CitizenReport>("/citizen-reports", { method: "POST", body: JSON.stringify(payload) }),
-  citizenReports: () => api<CitizenReport[]>("/citizen-reports")
+  citizenReports: () => api<CitizenReport[]>("/citizen-reports"),
+  updateCitizenReportStatus: (id: string, status: CitizenReport["status"]) => api<CitizenReport>(`/citizen-reports/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) })
 };

@@ -36,6 +36,10 @@ const citizenReportSchema = z.object({
   description: z.string().min(1)
 });
 
+const citizenReportStatusSchema = z.object({
+  status: z.enum(["pendiente", "revisado", "derivado"])
+});
+
 export function createApp(store: Store = createMemoryStore()) {
   const app = express();
   app.use(cors());
@@ -99,6 +103,14 @@ export function createApp(store: Store = createMemoryStore()) {
 
   app.get("/citizen-reports", async (_req, res) => {
     res.json(await store.listCitizenReports());
+  });
+
+  app.patch("/citizen-reports/:id/status", async (req, res) => {
+    const parsed = citizenReportStatusSchema.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ errors: parsed.error.flatten().fieldErrors });
+    const report = await store.updateCitizenReportStatus(req.params.id, parsed.data.status);
+    if (!report) return res.status(404).json({ error: "Reporte ciudadano no encontrado." });
+    res.json(report);
   });
 
   app.get("/dashboard/stats", async (_req, res) => {

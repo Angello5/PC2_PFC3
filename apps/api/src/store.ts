@@ -25,6 +25,7 @@ export type Store = {
   createIncident(input: CreateIncidentInput): Promise<Incident>;
   createCitizenReport(input: CreateCitizenReportInput): Promise<CitizenReport>;
   listCitizenReports(): Promise<CitizenReport[]>;
+  updateCitizenReportStatus(id: string, status: CitizenReport["status"]): Promise<CitizenReport | null>;
   getDashboardStats(): Promise<DashboardStats>;
 };
 
@@ -84,6 +85,12 @@ export function createMemoryStore(): Store {
     },
     async listCitizenReports() {
       return citizenReports;
+    },
+    async updateCitizenReportStatus(reportId, status) {
+      const report = citizenReports.find((item) => item.id === reportId);
+      if (!report) return null;
+      report.status = status;
+      return report;
     },
     async getDashboardStats() {
       return {

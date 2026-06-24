@@ -158,6 +158,11 @@ export function createSupabaseStore(): Store | null {
       if (error) throw error;
       return (data || []).map(citizenReportFromRow);
     },
+    async updateCitizenReportStatus(id: string, status: CitizenReport["status"]) {
+      const { data, error } = await supabase.from("citizen_reports").update({ status }).eq("id", id).select("*").single();
+      if (error) return null;
+      return citizenReportFromRow(data);
+    },
     async getDashboardStats(): Promise<DashboardStats> {
       const [workers, donations, incidents, intersections, citizenReports] = await Promise.all([
         supabase.from("workers").select("status"),
