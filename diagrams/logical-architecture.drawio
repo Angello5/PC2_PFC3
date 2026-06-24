@@ -1,0 +1,20 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Arquitectura logica">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1169" pageHeight="827">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="ui" value="Frontend Next.js + React + TypeScript&#xa;Pantallas, formularios, QR, dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf0;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="70" y="180" width="260" height="110" as="geometry"/></mxCell>
+        <mxCell id="api" value="Backend Express + TypeScript&#xa;Validaciones, regla de menores, estadisticas" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f4ead8;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="450" y="180" width="280" height="110" as="geometry"/></mxCell>
+        <mxCell id="auth" value="Supabase Auth&#xa;Usuarios y sesiones" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f0e5;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="830" y="110" width="230" height="90" as="geometry"/></mxCell>
+        <mxCell id="db" value="Supabase PostgreSQL&#xa;organizations, profiles, workers, intersections, shifts, donations, incidents" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f0e5;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="830" y="270" width="230" height="140" as="geometry"/></mxCell>
+        <mxCell id="shared" value="packages/shared&#xa;Tipos y validaciones reutilizables" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff1ed;strokeColor=#b94a48;" vertex="1" parent="1"><mxGeometry x="450" y="390" width="280" height="90" as="geometry"/></mxCell>
+        <mxCell id="e1" value="HTTP JSON" edge="1" parent="1" source="ui" target="api"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" value="JWT / sesion" edge="1" parent="1" source="ui" target="auth"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" value="service role / SQL" edge="1" parent="1" source="api" target="db"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" value="reutiliza" edge="1" parent="1" source="ui" target="shared"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" value="reutiliza" edge="1" parent="1" source="api" target="shared"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
