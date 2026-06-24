@@ -94,6 +94,11 @@ export function createSupabaseStore(): Store | null {
       if (error) return null;
       return workerFromRow(data);
     },
+    async listWorkers() {
+      const { data, error } = await supabase.from("workers").select("*").order("created_at", { ascending: false });
+      if (error) throw error;
+      return (data || []).map(workerFromRow);
+    },
     async listActiveWorkers(intersectionId?: string) {
       let query = supabase.from("workers").select("*").eq("status", "activo").order("created_at", { ascending: false });
       if (intersectionId) {

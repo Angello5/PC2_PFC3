@@ -16,6 +16,7 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const client = {
   intersections: () => api<Intersection[]>("/intersections"),
+  workers: () => api<Worker[]>("/workers"),
   activeWorkers: () => api<Worker[]>("/workers/active"),
   worker: (id: string) => api<Worker>(`/workers/${id}`),
   stats: () => api<DashboardStats>("/dashboard/stats"),
