@@ -1,0 +1,1 @@
+web: pnpm --filter @manos-en-ruta/api start
