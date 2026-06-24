@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 import { z } from "zod";
 import { validateDonationAmount, validateWorker } from "@manos-en-ruta/shared";
-import { createMemoryStore, type Store } from "./store";
+import { createMemoryStore, type Store } from "./store.js";
 
 const workerSchema = z.object({
   fullName: z.string().min(1),

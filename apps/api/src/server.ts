@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { createApp } from "./app";
-import { createSupabaseStore } from "./supabaseStore";
+import { createApp } from "./app.js";
+import { createSupabaseStore } from "./supabaseStore.js";
 
 const port = Number(process.env.PORT || 4000);
 

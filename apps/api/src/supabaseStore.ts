@@ -9,7 +9,7 @@ import {
   type WorkerInput,
   normalizeWorkerStatus
 } from "@manos-en-ruta/shared";
-import type { CreateDonationInput, CreateIncidentInput, Store } from "./store";
+import type { CreateDonationInput, CreateIncidentInput, Store } from "./store.js";
 
 type Row = Record<string, unknown>;
 
