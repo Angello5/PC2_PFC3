@@ -1,0 +1,28 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Casos de uso">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="system" value="Manos en Ruta" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fffaf0;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="260" y="80" width="560" height="540" as="geometry"/></mxCell>
+        <mxCell id="driver" value="Conductor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1"><mxGeometry x="70" y="170" width="50" height="100" as="geometry"/></mxCell>
+        <mxCell id="org" value="ONG / Municipalidad" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1"><mxGeometry x="900" y="170" width="70" height="100" as="geometry"/></mxCell>
+        <mxCell id="worker" value="Trabajador adulto" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1"><mxGeometry x="70" y="430" width="70" height="100" as="geometry"/></mxCell>
+        <mxCell id="minor" value="Menor detectado" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1"><mxGeometry x="900" y="430" width="70" height="100" as="geometry"/></mxCell>
+        <mxCell id="uc1" value="Iniciar sesion" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f4ead8;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="430" y="120" width="190" height="54" as="geometry"/></mxCell>
+        <mxCell id="uc2" value="Registrar trabajador adulto" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f4ead8;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="390" y="205" width="260" height="58" as="geometry"/></mxCell>
+        <mxCell id="uc3" value="Registrar alerta / derivacion social" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff1ed;strokeColor=#b94a48;" vertex="1" parent="1"><mxGeometry x="370" y="290" width="300" height="58" as="geometry"/></mxCell>
+        <mxCell id="uc4" value="Ver trabajadores activos por zona" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f4ead8;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="360" y="375" width="320" height="58" as="geometry"/></mxCell>
+        <mxCell id="uc5" value="Escanear QR y registrar donacion simulada" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f4ead8;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="340" y="460" width="360" height="58" as="geometry"/></mxCell>
+        <mxCell id="uc6" value="Reportar incidente y ver estadisticas" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f4ead8;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="360" y="545" width="320" height="58" as="geometry"/></mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="driver" target="uc5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="org" target="uc1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="org" target="uc2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="org" target="uc4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="org" target="uc6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="worker" target="uc5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="minor" target="uc3"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
