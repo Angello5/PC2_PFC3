@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "node dist/apps/api/src/server.js",
-    "lint": "tsc --noEmit",
-    "test": "vitest run",
+    "lint": "pnpm --filter @manos-en-ruta/shared build && tsc --noEmit",
+    "test": "pnpm --filter @manos-en-ruta/shared build && vitest run",
     "build": "pnpm --filter @manos-en-ruta/shared build && tsc -p tsconfig.json"
   },
   "dependencies": {

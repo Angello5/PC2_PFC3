@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "lint": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests",
+    "lint": "pnpm --filter @manos-en-ruta/shared build && tsc --noEmit",
+    "test": "pnpm --filter @manos-en-ruta/shared build && vitest run --passWithNoTests",
     "build": "pnpm --filter @manos-en-ruta/shared build && next build"
   },
   "dependencies": {
