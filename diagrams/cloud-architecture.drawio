@@ -1,0 +1,20 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Arquitectura fisica cloud">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1169" pageHeight="827">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="user" value="Usuarios&#xa;Conductores / ONG / Municipalidad" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1"><mxGeometry x="80" y="210" width="80" height="110" as="geometry"/></mxCell>
+        <mxCell id="vercel" value="Vercel Edge Network / CDN&#xa;Hosting Next.js&#xa;URL publica frontend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf0;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="260" y="180" width="260" height="120" as="geometry"/></mxCell>
+        <mxCell id="railway" value="Railway Web Service&#xa;Node.js + Express container&#xa;URL publica API + logs + env vars" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f4ead8;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="620" y="180" width="280" height="130" as="geometry"/></mxCell>
+        <mxCell id="supabase" value="Supabase Managed Services&#xa;PostgreSQL + Auth + SQL Editor&#xa;Backups y dashboard gestionado" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e7f0e5;strokeColor=#1f6b4a;" vertex="1" parent="1"><mxGeometry x="620" y="390" width="280" height="130" as="geometry"/></mxCell>
+        <mxCell id="github" value="GitHub + GitHub Actions&#xa;Repositorio, ramas, PRs&#xa;lint + test + build" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef0f4;strokeColor=#5d6b61;" vertex="1" parent="1"><mxGeometry x="260" y="400" width="260" height="120" as="geometry"/></mxCell>
+        <mxCell id="e1" value="HTTPS" edge="1" parent="1" source="user" target="vercel"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" value="HTTPS / JSON" edge="1" parent="1" source="vercel" target="railway"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" value="HTTPS PostgREST/Auth client" edge="1" parent="1" source="railway" target="supabase"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" value="deploy web/api" edge="1" parent="1" source="github" target="vercel"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" value="deploy backend" edge="1" parent="1" source="github" target="railway"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
